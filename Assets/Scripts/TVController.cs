@@ -31,6 +31,7 @@ public class TVController : MonoBehaviour
     {
         if(other.TryGetComponent<PlayerMovement>(out PlayerMovement player))
         {
+            Debug.Log("TV triggered");
             isNear = true;
             ui.SetActive(true);
         }
