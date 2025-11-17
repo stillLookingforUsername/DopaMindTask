@@ -5,7 +5,7 @@ using UnityEngine;
 public class KeyPickup : MonoBehaviour
 {
     public GameObject keyUI;
-    private static bool keyCollected = false;
+    public static bool keyCollected = false;
 
     private bool isNear = false;
 
