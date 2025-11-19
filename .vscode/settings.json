@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "DopaMindTask.sln"
+    "dotnet.defaultSolution": "DopaMindTask.sln",
+    "dotnet.preferCSharpExtension": true
 }
