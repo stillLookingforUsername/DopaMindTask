@@ -13,99 +13,53 @@ public class JumpFreezeArea : MonoBehaviour
     private bool active = false;
     private int jumpCount = 0;
 
-/*
+
     private void OnTriggerEnter(Collider other)
     {
-        if(!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
+        if (!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
 
-        //disable normal movement and enable jump only movement
         var pm = other.GetComponent<PlayerMovement>();
-        if(pm != null) pm.enabled = false;
+        if (pm != null) pm.enabled = false;
 
         var jo = other.GetComponent<JumpOnly>();
-        if(jo != null) jo.enabled = true;
+        if (jo != null)
+        {
+            jo.enabled = true;
 
-        //force player to look at the jump info
+            jo.OnJump += HandleJumpEvent;
+        }
+
         other.transform.LookAt(lookTarget);
         jumpUI.SetActive(true);
         active = true;
         UpdateCounter();
     }
-    */
-    private void OnTriggerEnter(Collider other)
-{
-    if (!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
-
-    var pm = other.GetComponent<PlayerMovement>();
-    if (pm != null) pm.enabled = false;
-
-    var jo = other.GetComponent<JumpOnly>();
-    if (jo != null)
-    {
-        jo.enabled = true;
-
-        // 🔥 SUBSCRIBE HERE
-        jo.OnJump += HandleJumpEvent;
-    }
-
-    other.transform.LookAt(lookTarget);
-    jumpUI.SetActive(true);
-    active = true;
-    UpdateCounter();
-}
-/*
 
     private void OnTriggerExit(Collider other)
     {
-        if(!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
-        
+        if (!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
+
         var pm = other.GetComponent<PlayerMovement>();
-        if(pm != null) pm.enabled = true;
+        if (pm != null) pm.enabled = true;
 
         var jo = other.GetComponent<JumpOnly>();
-        if(jo != null) jo.enabled = false;
+        if (jo != null)
+        {
+            jo.enabled = false;
+
+            jo.OnJump -= HandleJumpEvent;
+        }
 
         jumpUI.SetActive(false);
         active = false;
     }
-    */private void OnTriggerExit(Collider other)
-{
-    if (!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
 
-    var pm = other.GetComponent<PlayerMovement>();
-    if (pm != null) pm.enabled = true;
-
-    var jo = other.GetComponent<JumpOnly>();
-    if (jo != null)
-    {
-        jo.enabled = false;
-
-        // 🔥 UNSUBSCRIBE HERE
-        jo.OnJump -= HandleJumpEvent;
-    }
-
-    jumpUI.SetActive(false);
-    active = false;
-}
-
-/*
-
-    private void Update()
+    private void HandleJumpEvent()
     {
         if(!active) return;
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            jumpCount++;
-            UpdateCounter();
-        }
+        jumpCount++;
+        UpdateCounter();
     }
-    */
-    private void HandleJumpEvent()
-{
-    if(!active) return;
-    jumpCount++;
-    UpdateCounter();
-}
 
 
     private void UpdateCounter()
