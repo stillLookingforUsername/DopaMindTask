@@ -8,11 +8,12 @@ public class JumpFreezeArea : MonoBehaviour
 {
     public GameObject jumpUI; //World space canvas
     public Transform lookTarget; //point on the wall to face
-    public TextMeshPro jumpCounterText; //reference to JumpCounter text  inside  the jumpUI
+    public TextMeshProUGUI jumpCounterText; //reference to JumpCounter text  inside  the jumpUI
 
     private bool active = false;
     private int jumpCount = 0;
 
+/*
     private void OnTriggerEnter(Collider other)
     {
         if(!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
@@ -30,6 +31,29 @@ public class JumpFreezeArea : MonoBehaviour
         active = true;
         UpdateCounter();
     }
+    */
+    private void OnTriggerEnter(Collider other)
+{
+    if (!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
+
+    var pm = other.GetComponent<PlayerMovement>();
+    if (pm != null) pm.enabled = false;
+
+    var jo = other.GetComponent<JumpOnly>();
+    if (jo != null)
+    {
+        jo.enabled = true;
+
+        // 🔥 SUBSCRIBE HERE
+        jo.OnJump += HandleJumpEvent;
+    }
+
+    other.transform.LookAt(lookTarget);
+    jumpUI.SetActive(true);
+    active = true;
+    UpdateCounter();
+}
+/*
 
     private void OnTriggerExit(Collider other)
     {
@@ -44,6 +68,27 @@ public class JumpFreezeArea : MonoBehaviour
         jumpUI.SetActive(false);
         active = false;
     }
+    */private void OnTriggerExit(Collider other)
+{
+    if (!other.TryGetComponent<PlayerMovement>(out PlayerMovement player)) return;
+
+    var pm = other.GetComponent<PlayerMovement>();
+    if (pm != null) pm.enabled = true;
+
+    var jo = other.GetComponent<JumpOnly>();
+    if (jo != null)
+    {
+        jo.enabled = false;
+
+        // 🔥 UNSUBSCRIBE HERE
+        jo.OnJump -= HandleJumpEvent;
+    }
+
+    jumpUI.SetActive(false);
+    active = false;
+}
+
+/*
 
     private void Update()
     {
@@ -54,6 +99,14 @@ public class JumpFreezeArea : MonoBehaviour
             UpdateCounter();
         }
     }
+    */
+    private void HandleJumpEvent()
+{
+    if(!active) return;
+    jumpCount++;
+    UpdateCounter();
+}
+
 
     private void UpdateCounter()
     {

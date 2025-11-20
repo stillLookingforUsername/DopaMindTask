@@ -14,7 +14,7 @@ public class KeyPickup : MonoBehaviour
         if(isNear && Input.GetKeyDown(KeyCode.E) && !keyCollected)
         {
             keyCollected = true;
-            keyUI.SetActive(true);
+            keyUI.SetActive(false);
             gameObject.SetActive(false);
         }
     }

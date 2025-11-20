@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class TVController : MonoBehaviour
 {
     public GameObject screenSprite;
+    public VideoPlayer videoPlayer;
     public AudioSource audioSource;
     public GameObject ui;
 
@@ -23,8 +25,16 @@ public class TVController : MonoBehaviour
         isOn = !isOn;
         screenSprite.SetActive(isOn);
 
-        if (isOn) audioSource.Play();
-        else audioSource.Stop();
+        if (isOn) 
+        {
+            videoPlayer.Play();
+            audioSource.Play();
+        }
+        else 
+        {
+            videoPlayer.Stop();
+            audioSource.Stop();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
